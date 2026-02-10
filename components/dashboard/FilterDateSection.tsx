@@ -7,21 +7,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DateRangePicker } from "@/components/ui/date-range-picker";
-import { useDashboardStore, type UserType } from "@/lib/store";
-import { Filter } from "lucide-react";
-import { useState } from "react";
-import { subDays } from "date-fns";
+import { useDashboardStore, type DateRange, type UserType } from "@/lib/store";
+import { Calendar, Filter } from "lucide-react";
 
 export function FilterDateSection() {
-  const { userType, setUserType } = useDashboardStore();
-  const [dateRange, setDateRange] = useState<{
-    from?: Date;
-    to?: Date;
-  }>({
-    from: subDays(new Date(), 30),
-    to: new Date(),
-  });
+  const { dateRange, userType, setDateRange, setUserType } =
+    useDashboardStore();
+
+  const dateRangeLabels: Record<DateRange, string> = {
+    "7days": "Last 7 Days",
+    "30days": "Last 30 Days",
+    "12months": "Last 12 Months",
+  };
 
   const userTypeLabels: Record<UserType, string> = {
     all: "All Users",
@@ -31,20 +28,33 @@ export function FilterDateSection() {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 mb-8">
-      <div className="flex flex-col gap-2 flex-1 max-w-sm">
+    <div className="flex flex-col sm:flex-row gap-3 mb-8">
+      <div className="flex flex-col gap-2">
         <label className="text-sm font-medium text-muted-foreground">
           Date Range
         </label>
-        <DateRangePicker
-          from={dateRange.from}
-          to={dateRange.to}
-          onDateRangeChange={setDateRange}
-          placeholder="Pick a date range"
-        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="gap-2 bg-transparent">
+              <Calendar className="w-4 h-4" />
+              {dateRangeLabels[dateRange]}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem onClick={() => setDateRange("7days")}>
+              Last 7 Days
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setDateRange("30days")}>
+              Last 30 Days
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setDateRange("12months")}>
+              Last 12 Months
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
-      <div className="flex flex-col gap-2 flex-1 max-w-sm">
+      <div className="flex flex-col gap-2">
         <label className="text-sm font-medium text-muted-foreground">
           User Type
         </label>

@@ -22,14 +22,20 @@ export default function Home() {
     ordersData,
     userDistribution,
     isLoading,
-    error,
+    dateRange,
+    userType,
     fetchAllData,
   } = useDashboardStore();
-
+  
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+  if (mounted) {
     fetchAllData();
-  }, [fetchAllData]);
+  }
+}, [mounted, dateRange, userType, fetchAllData]);
 
 
   return (

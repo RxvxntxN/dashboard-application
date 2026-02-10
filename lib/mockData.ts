@@ -75,27 +75,116 @@ export const mockDashboardData: DashboardData = {
   ],
 };
 
-// Simulated API delay
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-// Mock API endpoints
-export async function fetchDashboardStats(): Promise<DashboardStats> {
+
+export async function fetchDashboardStats(
+  dateRange: string,
+  userType: string
+): Promise<DashboardStats> {
   await delay(300);
-  return mockDashboardData.stats;
+
+  const multiplier =
+    dateRange === "7days"
+      ? 0.15
+      : dateRange === "30days"
+        ? 0.6
+        : dateRange === "12months"
+          ? 1
+          : 1;
+
+  const userTypeMultiplier =
+    userType === "free"
+      ? 0.4
+      : userType === "premium"
+        ? 0.8
+        : userType === "enterprise"
+          ? 0.6
+          : 1;
+
+  const baseStats = mockDashboardData.stats;
+  return {
+    totalRevenue: Math.round(baseStats.totalRevenue * multiplier * userTypeMultiplier),
+    totalUsers: Math.round(baseStats.totalUsers * multiplier * userTypeMultiplier),
+    orders: Math.round(baseStats.orders * multiplier * userTypeMultiplier),
+    conversionRate: baseStats.conversionRate,
+    revenueChange: baseStats.revenueChange,
+    usersChange: baseStats.usersChange,
+    ordersChange: baseStats.ordersChange,
+    conversionChange: baseStats.conversionChange,
+  };
 }
 
-export async function fetchRevenueData(): Promise<ChartData[]> {
+export async function fetchRevenueData(
+  dateRange: string,
+  userType: string
+): Promise<ChartData[]> {
   await delay(400);
-  return mockDashboardData.revenueChart;
+  let data = mockDashboardData.revenueChart;
+
+  if (dateRange === "7days") {
+    data = data.slice(-7);
+  } else if (dateRange === "30days") {
+    data = data.slice(-9);
+  }
+
+  const multiplier =
+    userType === "free"
+      ? 0.4
+      : userType === "premium"
+        ? 0.8
+        : userType === "enterprise"
+          ? 0.6
+          : 1;
+
+  return data.map((item) => ({
+    ...item,
+    revenue: Math.round(item.revenue * multiplier),
+    orders: Math.round(item.orders * multiplier),
+  }));
 }
 
-export async function fetchOrdersData(): Promise<ChartData[]> {
+export async function fetchOrdersData(
+  dateRange: string,
+  userType: string
+): Promise<ChartData[]> {
   await delay(400);
-  return mockDashboardData.ordersChart;
+  let data = mockDashboardData.ordersChart;
+
+  if (dateRange === "7days") {
+    data = data.slice(-7);
+  } else if (dateRange === "30days") {
+    data = data.slice(-9);
+  }
+
+  const multiplier =
+    userType === "free"
+      ? 0.4
+      : userType === "premium"
+        ? 0.8
+        : userType === "enterprise"
+          ? 0.6
+          : 1;
+
+  return data.map((item) => ({
+    ...item,
+    revenue: Math.round(item.revenue * multiplier),
+    orders: Math.round(item.orders * multiplier),
+  }));
 }
 
-export async function fetchUserDistribution(): Promise<UserDistribution[]> {
+export async function fetchUserDistribution(
+  userType: string
+): Promise<UserDistribution[]> {
   await delay(350);
-  return mockDashboardData.userDistribution;
+  let distribution = mockDashboardData.userDistribution;
+
+  if (userType !== "all") {
+    distribution = distribution.filter((item) =>
+      item.name.toLowerCase().includes(userType.toLowerCase())
+    );
+  }
+
+  return distribution;
 }

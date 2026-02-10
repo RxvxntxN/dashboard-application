@@ -33,7 +33,6 @@ interface DashboardStore {
 }
 
 export const useDashboardStore = create<DashboardStore>((set) => ({
-  // Initial state
   stats: null,
   revenueData: [],
   ordersData: [],
@@ -43,7 +42,7 @@ export const useDashboardStore = create<DashboardStore>((set) => ({
   isLoading: false,
   error: null,
 
-  // Actions
+ 
   setDateRange: (range: DateRange) => set({ dateRange: range }),
   setUserType: (type: UserType) => set({ userType: type }),
 
@@ -52,11 +51,12 @@ export const useDashboardStore = create<DashboardStore>((set) => ({
   fetchAllData: async () => {
     set({ isLoading: true, error: null });
     try {
+      const state = useDashboardStore.getState();
       const [stats, revenue, orders, distribution] = await Promise.all([
-        fetchDashboardStats(),
-        fetchRevenueData(),
-        fetchOrdersData(),
-        fetchUserDistribution(),
+        fetchDashboardStats(state.dateRange, state.userType),
+        fetchRevenueData(state.dateRange, state.userType),
+        fetchOrdersData(state.dateRange, state.userType),
+        fetchUserDistribution(state.userType),
       ]);
 
       set({
