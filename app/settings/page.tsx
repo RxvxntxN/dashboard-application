@@ -5,7 +5,7 @@ import { Header } from "@/components/dashboard/Header";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Card } from "@/components/ui/card";
 
-export default function AnalyticsPage() {
+export default function SetingsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -18,12 +18,12 @@ export default function AnalyticsPage() {
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <h2 className="text-3xl font-bold text-foreground mb-8">
-              Analytics
+              Settings
             </h2>
 
             <Card className="p-8 bg-card border-border text-center">
               <p className="text-muted-foreground">
-                Advanced analytics features coming soon...
+                Settings features coming soon...
               </p>
             </Card>
           </div>

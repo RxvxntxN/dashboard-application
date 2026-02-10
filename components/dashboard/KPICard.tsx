@@ -1,5 +1,5 @@
 import React from "react"
-import { LucideIcon } from "lucide-react";
+//import { LucideIcon } from "lucide-react"; // Uncomment if you want to use Lucide icons in the future
 import { Card } from "@/components/ui/card";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
