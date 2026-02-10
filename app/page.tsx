@@ -7,6 +7,9 @@ import { KPICard } from "@/components/dashboard/KPICard";
 import { useDashboardStore } from "@/lib/store";
 import { DollarSign, Users, ShoppingCart, TrendingUp } from "lucide-react";
 import { useEffect } from "react";
+import { RevenueChart } from "@/components/dashboard/RevenueChart";
+import { OrdersChart } from "@/components/dashboard/OrdersChart";
+import { UserDistributionChart } from "@/components/dashboard/UserDistributionChart";
 
 export default function Home() {
 
@@ -68,6 +71,17 @@ export default function Home() {
                 value={`${stats?.conversionRate ?? 0}%`}
                 change={stats?.conversionChange ?? 0}
                 icon={<TrendingUp className="w-6 h-6" />}
+                isLoading={isLoading}
+              />
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <RevenueChart data={revenueData} isLoading={isLoading} />
+              <OrdersChart data={ordersData} isLoading={isLoading} />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <UserDistributionChart
+                data={userDistribution}
                 isLoading={isLoading}
               />
             </div>

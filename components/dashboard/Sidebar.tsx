@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import {
+  ChartPie,
   BarChart3,
   TrendingUp,
   Users,
@@ -50,7 +51,7 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         <div className="flex items-center justify-between h-16 px-6 border-b border-border">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary  rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-white dark:text-black" />
+              <ChartPie className="w-5 h-5 text-white dark:text-black" />
             </div>
             <span className="font-bold text-foreground ">Analytics</span>
           </div>
